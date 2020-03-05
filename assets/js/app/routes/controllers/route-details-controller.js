@@ -29,13 +29,10 @@
         $rootScope.Gateway.version
       );
       const routeState = $scope.route || _route;
-      const routeHeaders = routeState.headers;
+      const routeHeaders = routeState.headers || {};
 
       function isEmptyObject(val) {
-        return (
-          Object.prototype.toString.call(val) === '[object Object]' &&
-          !Object.keys(val).length
-        );
+        return JSON.stringify(val) === '{}';
       }
 
       // 在传输一个空的 [] 时，将返回一个 {}，此为 kong 的 BUG，故以下手动更新为 Array 类型。
@@ -99,9 +96,13 @@
             console.log('err', err);
             $scope.loading = false;
             var errors = {};
-            Object.keys(err.data.body).forEach(function(key) {
-              MessageService.error(key + ' : ' + err.data.body[key]);
-            });
+            if (err.data && err.data.body) {
+              Object.keys(err.data.body).forEach(function(key) {
+                MessageService.error(key + ' : ' + err.data.body[key]);
+              });
+            } else {
+              MessageService.error(err.message || error);
+            }
             $scope.errors = errors;
           });
       };

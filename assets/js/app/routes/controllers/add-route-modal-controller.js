@@ -36,6 +36,7 @@
       $scope.route = angular.copy(
         RoutesService.getProperties($rootScope.Gateway.version)
       );
+
       // Assign service id
       $scope.route.service = {
         id: _service.id
@@ -64,17 +65,14 @@
       };
 
       $scope.submit = function() {
-        clearRoute();
-
-        const route = $scope.route;
-
+        const route = Object.assign({}, $scope.route);
         $scope.errorMessage = '';
 
         new Promise(resolve => {
           resolve(
             RoutesService.add(
               Object.assign(route, {
-                headers: JSON.parse(route.headers.replace(/'/g, '"'))
+                headers: JSON.parse((route.headers || '{}').replace(/'/g, '"'))
               })
             )
           );
@@ -83,6 +81,17 @@
             $rootScope.$broadcast('route.created');
             MessageService.success('Route created!');
             $uibModalInstance.dismiss(res);
+          })
+          .then(() => {
+            const route = $scope.route;
+            Object.keys(route).forEach(key => {
+              if (Array.isArray(route[key])) {
+                route[key] = [];
+              }
+              if (typeof route[key] === 'string') {
+                route[key] = '';
+              }
+            });
           })
           .catch(function(err) {
             $log.error('Create new route error:', err);
@@ -104,18 +113,6 @@
             }
           });
       };
-
-      function clearRoute() {
-        for (var key in $scope.route) {
-          if ($scope.route[key] instanceof Array && !$scope.route[key].length) {
-            delete $scope.route[key];
-          }
-
-          if ($scope.route[key] === undefined || $scope.route[key] === '') {
-            delete $scope.route[key];
-          }
-        }
-      }
     }
   ]);
 })();
