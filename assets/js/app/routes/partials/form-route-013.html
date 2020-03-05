@@ -104,19 +104,37 @@
   >
   <div class="col-sm-9">
     <input type="text" ng-model="route.headers" class="form-control" />
+    <ol class="help-block">
+      <li>
+        一个或多个<strong>请求头的键名及其键值列表组成的对象</strong>。该项用于匹配请求路由的请求头部。
+      </li>
+      <li>
+        注意，此处不能匹配 <code>Hosts</code> 请求头部，该请求头应在
+        <code>Hosts</code> 栏目中配置。
+      </li>
+      <!-- 在传输一个空的 [] 时，将返回一个 {}，此为 kong 的 BUG，故以下手动更新为 Array 类型。由 /api/controllers/KongProxyController.js 的 84, 88, 125 , 157 行可见并未对 kong 的响应做过处理，那么以上 BUG 即是 Kong 服务器上的 Bug -->
+      <!-- <li>
+        <strong
+          >另外，在传输一个空的 <code>[]</code> 时，将返回一个
+          <code>{}</code>，此为 <code>kong</code> 的
+          BUG。若出现此问题，请在更新此项时，手动更新为
+          <code>Array</code> 类型。</strong
+        >
+      </li> -->
+      <li>
+        更多信息可见
+        <a
+          href="https://docs.konghq.com/1.5.x/admin-api/#add-route"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <code>Kong</code> 官方文档 - add routes</a
+        >
+        的 <code>response</code> 章节。
+      </li>
+    </ol>
     <p class="help-block">
-      一个或多个<strong>请求头的键名及其键值列表组成的对象</strong>，如
-      <code>{"content-type": ["application/json"]}</code
-      >。该项用于匹配请求路由的请求头部。注意，此处不能匹配
-      <code>Hosts</code> 请求头部，该请求头应在
-      <code>Hosts</code> 栏目中配置。更多信息可见
-      <a
-        href="https://docs.konghq.com/1.5.x/admin-api/#add-route"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <code>Kong</code> 官方文档 - add routes</a
-      >
+      如 <code>{"content-type": ["application/json"], "app_key": ["123"]}</code>
     </p>
   </div>
 </div>
