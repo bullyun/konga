@@ -21,12 +21,12 @@
         '013': {
           name: '',
           hosts: [],
-          protocols: [],
+          protocols: ['http', 'https'],
           methods: [],
           paths: [],
           headers: '',
-          strip_path: true,
-          preserve_host: false,
+          strip_path: false,
+          preserve_host: true,
           https_redirect_status_code: 426,
           regex_priority: 0
         }
