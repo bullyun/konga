@@ -24,7 +24,7 @@
             protocol: '',
             port: null,
             path: '',
-            retries: 5,
+            retries: 0,
             connect_timeout: 60000,
             write_timeout: 60000,
             read_timeout: 60000
